@@ -1,7 +1,7 @@
 version: 2.1
 
 defaults: &defaults
-  working_directory: ~/@intuit/judo
+  working_directory: ~/intuit/judo
   docker:
     - image: circleci/node:latest-browsers
 
@@ -14,17 +14,17 @@ jobs:
           keys:
             # Find a cache corresponding to this specific package.json checksum
             # when this file is changed, this key will fail
-            - @intuit/judo-{{ .Branch }}-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
-            - @intuit/judo-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - @intuit/judo-{{ .Branch }}
+            - intuit/judo-{{ .Branch }}-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
+            - intuit/judo-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - intuit/judo-{{ .Branch }}
             # Find the most recent cache used from any branch
-            - @intuit/judo-master
-            - @intuit/judo-
+            - intuit/judo-master
+            - intuit/judo-
       - run:
           name: Install Dependencies
           command: npm i
       - save_cache:
-          key: @intuit/judo-{{ .Branch }}-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
+          key: intuit/judo-{{ .Branch }}-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
           paths:
             - node_modules
 
@@ -37,7 +37,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/@intuit/judo
+          at: ~/intuit/judo
       - run:
           name: Lint
           command: yarn lint
@@ -46,7 +46,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/@intuit/judo
+          at: ~/intuit/judo
       - run:
           name: Test
           command: yarn test
@@ -55,7 +55,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/@intuit/judo
+          at: ~/intuit/judo
       - run:
           name: Build
           command: yarn build

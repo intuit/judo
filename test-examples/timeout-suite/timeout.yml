@@ -1,0 +1,10 @@
+run:
+  timeoutPass:
+    command: sleep 1s
+    expectCode: 0
+  timeoutFail:
+    command: sleep 2s
+    expectCode: 0
+  timeoutOngoing:
+    command: bash ./test-examples/timeout-suite/timeout-test.sh
+    expectCode: 0

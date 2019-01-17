@@ -1,0 +1,18 @@
+run:
+  goodbyeWorld:
+    prerequisiteCwd: .
+    prerequisites:
+    - echo "this is a prerequisite command"
+    command: 'echo "goodbye!"'
+    expectCode: 0
+    outputContains:
+    - 'goodbye!'
+    outputDoesntContain:
+    - 'hi!'
+  helloMarsShouldFail:
+    command: 'echo "blorp!"'
+    expectCode: 0
+    outputContains:
+    - 'goodbye!'
+    outputDoesntContain:
+    - 'blorp!'

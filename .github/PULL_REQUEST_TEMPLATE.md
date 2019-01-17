@@ -1,0 +1,6 @@
+- [ ] Does all of your new or changed code have unit tests?
+- [ ] Is overall unit test statement coverage still above 85%?
+- [ ] Is code style linting passing with `npm run lint`?
+- [ ] Is the related GitHub issue number included in your branch name? ex branch name: `fix/12-some-bug`
+- [ ] Is the related GitHub issue number included in your pull request title? example PR title: "12 - Fixes some bug"
+- [ ] Is documentation still up to date after your change?

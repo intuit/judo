@@ -1,0 +1,15 @@
+run:
+  helloWorldAgain:
+    command: 'echo "hi again!"'
+    expectCode: 0
+    outputContains:
+    - 'hi'
+    outputDoesntContain:
+    - 'bye'
+  goodbyeWorldAgain:
+    command: 'echo "bye again!"'
+    expectCode: 0
+    outputContains:
+    - 'bye'
+    outputDoesntContain:
+    - 'hi'

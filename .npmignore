@@ -1,0 +1,25 @@
+# Ignore files that you don't want consumers to have to download
+# By default, the following paths and files are ignored, so there's no need to add them to .npmignore explicitly:
+#
+#   .*.swp
+#   ._*
+#   .DS_Store
+#   .git
+#   .hg
+#   .npmrc
+#   .lock-wscript
+#   .svn
+#   .wafpickle-*
+#   config.gypi
+#   CVS
+#   npm-debug.log
+#   node_modules
+
+# package-lock.json
+# .babelrc
+.vscode
+.npmignore
+.gitignore
+.npmrc
+coverage
+test

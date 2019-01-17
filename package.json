@@ -1,0 +1,78 @@
+{
+  "name": "judo",
+  "version": "0.0.6",
+  "description": "Test command line interfaces.",
+  "author": "Evan_Francis@intuit.com",
+  "license": "MIT",
+  "files": [
+    "dist/"
+  ],
+  "bin": {
+    "judo": "dist/judo.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Intuit/judo"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "keywords": [
+    "judo",
+    "cli testing",
+    "cli framework",
+    "cli",
+    "command line",
+    "judo framework"
+  ],
+  "scripts": {
+    "test": "jest --no-cache --coverage",
+    "build": "rimraf dist/ && babel src -d dist --ignore '**/*.test.js'",
+    "demo:pass": "npm run build && node dist/judo.js test-examples/simple-test-suite/hello-world-regex.yml",
+    "demo:fail": "npm run build && node dist/judo.js test-examples/simple-test-suite/goodbye-world-fail.yml",
+    "demo:timeout": "npm run build && node dist/judo.js test-examples/timeout-suite/timeout.yml --timeout 1500",
+    "demo:all": "npm run build && node dist/judo.js test-examples/ --timeout 1500",
+    "lint": "semistandard --env jest | snazzy",
+    "lint:fix": "semistandard --env jest --fix | snazzy",
+    "precommit": "npm run lint:fix",
+    "prepush": "npm run lint:fix && npm run test",
+    "postpublish": "git push --follow-tags --set-upstream origin master"
+  },
+  "dependencies": {
+    "colors": "~1.3.2",
+    "js-yaml": "~3.12.0",
+    "parse-spawn-args": "~1.0.2",
+    "string-to-regexp": "~0.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "~7.1.2",
+    "@babel/core": "~7.1.2",
+    "@babel/preset-env": "~7.1.0",
+    "babel-core": "~7.0.0-bridge.0",
+    "babel-jest": "~23.6.0",
+    "jest": "~23.6.0",
+    "rimraf": "~2.6.2",
+    "semistandard": "~12.0.1",
+    "snazzy": "~8.0.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage/",
+    "coverageThreshold": {
+      "global": {
+        "branches": 75,
+        "functions": 85,
+        "lines": 85,
+        "statements": 90
+      }
+    },
+    "coverageReporters": [
+      "lcov",
+      "cobertura",
+      "html"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ]
+  }
+}

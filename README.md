@@ -20,7 +20,7 @@ Judo is an easy to use Command Line Interface (CLI) Integration Testing Framewor
 ## Installation
 
 ```
-npm i -D judo
+npm i -D @intuit/judo
 ```
 
 Then in `package.json`
@@ -35,7 +35,7 @@ OR if you don't have a `package.json` because you're not in a JavaScript project
 
 ```bash
 # install it globally
-npm i -g judo
+npm i -g @intuit/judo
 
 # then run it anywhere from the command line
 judo <tests-dir>

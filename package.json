@@ -6,6 +6,10 @@
     "name": "Evan Francis",
     "email": "Evan_Francis@intuit.com"
   },
+  "publishConfig": {
+    "allow": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "MIT",
   "files": [
     "dist/"

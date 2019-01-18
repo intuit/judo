@@ -1,3 +1,11 @@
+# v0.0.10 (Thu Jan 17 2019)
+
+#### 🐛  Bug Fix
+
+- Verify Release Process [#2](https://github.com/intuit/judo/pull/2) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v0.0.9 (Thu Jan 17 2019)
 
 #### 🐛  Bug Fix

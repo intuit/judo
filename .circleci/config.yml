@@ -22,7 +22,7 @@ jobs:
             - intuit/judo-
       - run:
           name: Install Dependencies
-          command: npm i
+          command: npm ci
       - save_cache:
           key: intuit/judo-{{ .Branch }}-{{ checksum "package-lock.json" }}-{{ checksum ".circleci/config.yml" }}
           paths:

@@ -3,6 +3,8 @@
 Judo is an easy to use Command Line Interface (CLI) Integration Testing Framework, driven from a simple `yaml` file that also contains assertions.
 
 [![CircleCI](https://circleci.com/gh/intuit/judo.svg?style=svg)](https://circleci.com/gh/intuit/judo)
+[![npm](https://img.shields.io/npm/v/@intuit/judo.svg)](https://www.npmjs.com/package/@intuit/judo)
+[![npm](https://img.shields.io/npm/dt/@intuit/judo.svg)](https://www.npmjs.com/package/@intuit/judo)
 [![Code Coverage][coverageicon]][ci]
 [![Test Status][testicon]][ci]
 

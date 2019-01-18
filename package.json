@@ -1,6 +1,6 @@
 {
   "name": "@intuit/judo",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "Test command line interfaces.",
   "author": {
     "name": "Evan Francis",

@@ -1,12 +1,16 @@
-# Judo
+<p align='center'>
+  <img src='./assets/logo.svg' width='350'>
+</p>
 
-Judo is an easy to use Command Line Interface (CLI) Integration Testing Framework, driven from a simple `yaml` file that also contains assertions.
+<p align='center'>
+   <a href='https://circleci.com/gh/intuit/judo'><img src='https://circleci.com/gh/intuit/judo.svg?style=svg' alt='CircleCI build'/></a>
+  <a href='https://www.npmjs.com/package/@intuit/judo'><img src='https://img.shields.io/npm/v/@intuit/judo.svg' alt='NPM Version'/></a>
+  <a href='https://www.npmjs.com/package/@intuit/judo'><img src='https://img.shields.io/npm/dt/@intuit/judo.svg' alt='NPM downloads'/></a>
+  <a href='https://codecov.io/gh/Intuit/judo'><img src='https://img.shields.io/codecov/c/github/intuit/judo.svg' alt='Code Coverage'/></a>
+  <a href=''><img src='' alt='Test Status'/></a>
+</p>
 
-[![CircleCI](https://circleci.com/gh/intuit/judo.svg?style=svg)](https://circleci.com/gh/intuit/judo)
-[![npm](https://img.shields.io/npm/v/@intuit/judo.svg)](https://www.npmjs.com/package/@intuit/judo)
-[![npm](https://img.shields.io/npm/dt/@intuit/judo.svg)](https://www.npmjs.com/package/@intuit/judo)
-[![Codecov](https://img.shields.io/codecov/c/github/intuit/judo.svg)](https://codecov.io/gh/Intuit/judo)
-[![Test Status][testicon]][ci]
+Judo is an easy-to-use Command Line Interface (CLI) integration testing framework, driven from a simple `yaml` file that instructs the framework what commands to run and how to assert the outcome. Test your CLI tools in an automated fashion using nothing but stdin, stdout and stderr.
 
 ## Builds <a name="Builds"></a>
 
@@ -16,8 +20,8 @@ Judo is an easy to use Command Line Interface (CLI) Integration Testing Framewor
 
 | Build Dependencies |           |
 | ------------------ | --------- |
-| [node][]           | \>=8.7.0  |
-| [python][]         | \>=2.7.10 |
+| [node](https://nodejs.org/en/)           | \>=8.7.0  |
+| [python](https://www.python.org/)         | \>=2.7.10 |
 
 ## Installation
 

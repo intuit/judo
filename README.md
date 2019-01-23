@@ -1,7 +1,7 @@
 # Judo
 
 <p align='center'>
-<img src='./assets/logo.svg' width='300'>
+<img src='./assets/logo.svg' width='350'>
 </p>
 
 Judo is an easy-to-use Command Line Interface (CLI) integration testing framework, driven from a simple `yaml` file that instructs the framework what commands to run and how to assert the outcome. Test your CLI tools in an automated fashion using nothing but stdin, stdout and stderr.

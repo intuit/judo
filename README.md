@@ -1,7 +1,7 @@
 # Judo
 
 <p align='center'>
-<img src='./assets/logo.svg' width='200'>
+<img src='./assets/logo.svg' width='300'>
 </p>
 
 Judo is an easy to use Command Line Interface (CLI) Integration Testing Framework, driven from a simple `yaml` file that also contains assertions.

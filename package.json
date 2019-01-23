@@ -82,5 +82,8 @@
     "collectCoverageFrom": [
       "src/**/*.js"
     ]
+  },
+  "auto": {
+    "onlyPublishWithReleaseLabel": true
   }
 }

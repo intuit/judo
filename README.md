@@ -20,7 +20,6 @@ Judo is an easy-to-use Command Line Interface (CLI) integration testing framewor
 | Build Dependencies                |           |
 | --------------------------------- | --------- |
 | [node](https://nodejs.org/en/)    | \>=8.7.0  |
-| [python](https://www.python.org/) | \>=2.7.10 |
 
 ## Installation
 

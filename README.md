@@ -7,7 +7,6 @@
   <a href='https://www.npmjs.com/package/@intuit/judo'><img src='https://img.shields.io/npm/v/@intuit/judo.svg' alt='NPM Version'/></a>
   <a href='https://www.npmjs.com/package/@intuit/judo'><img src='https://img.shields.io/npm/dt/@intuit/judo.svg' alt='NPM downloads'/></a>
   <a href='https://codecov.io/gh/Intuit/judo'><img src='https://img.shields.io/codecov/c/github/intuit/judo.svg' alt='Code Coverage'/></a>
-  <a href=''><img src='' alt='Test Status'/></a>
 </p>
 
 Judo is an easy-to-use Command Line Interface (CLI) integration testing framework, driven from a simple `yaml` file that instructs the framework what commands to run and how to assert the outcome. Test your CLI tools in an automated fashion using nothing but stdin, stdout and stderr.
@@ -18,10 +17,10 @@ Judo is an easy-to-use Command Line Interface (CLI) integration testing framewor
 
 ## Prerequisites
 
-| Build Dependencies |           |
-| ------------------ | --------- |
-| [node](https://nodejs.org/en/)           | \>=8.7.0  |
-| [python](https://www.python.org/)         | \>=2.7.10 |
+| Build Dependencies                |           |
+| --------------------------------- | --------- |
+| [node](https://nodejs.org/en/)    | \>=8.7.0  |
+| [python](https://www.python.org/) | \>=2.7.10 |
 
 ## Installation
 

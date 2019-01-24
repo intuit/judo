@@ -50,6 +50,9 @@ jobs:
       - run:
           name: Test
           command: yarn test
+      - run:
+          name: Send CodeCov Results
+          command: bash <(curl -s https://codecov.io/bash) -t 0d1ea8b3-0641-4752-91d5-41eabab54f18
 
   build:
     <<: *defaults

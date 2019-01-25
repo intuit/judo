@@ -23,6 +23,8 @@ Judo is an easy-to-use Command Line Interface (CLI) integration testing framewor
 
 ## Installation
 
+Judo is distributed and installed using npm, the package manager that comes bundled with node.js. In order to be able to install Judo, you will need to first ensure that you have node.js installed on your system (which will also install npm for you). Then you can run the following command:
+
 ```
 npm i -D @intuit/judo
 ```
@@ -43,6 +45,28 @@ npm i -g @intuit/judo
 
 # then run it anywhere from the command line
 judo <tests-dir>
+```
+
+OR if you would like to locally develop Judo:
+
+```bash
+# clone the judo repository
+git clone https://github.com/intuit/judo
+
+# go to the judo directory
+cd judo
+
+# then install the dependencies
+npm i
+
+# next build the src/ files into dist/
+npm run
+
+# finally link the binary executable
+npm link
+
+# and voila, use Judo from CLI!
+judo <file>.yml
 ```
 
 ## Usage

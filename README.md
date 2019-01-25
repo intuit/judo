@@ -11,10 +11,6 @@
 
 Judo is an easy-to-use Command Line Interface (CLI) integration testing framework, driven from a simple `yaml` file that instructs the framework what commands to run and how to assert the outcome. Test your CLI tools in an automated fashion using nothing but stdin, stdout and stderr.
 
-## Builds <a name="Builds"></a>
-
-[Continuous Integration][ci] | [Pull Request][pr] | [Release][rl]
-
 ## Prerequisites
 
 | Build Dependencies                |           |

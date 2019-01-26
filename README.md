@@ -47,7 +47,9 @@ npm i -g @intuit/judo
 judo <tests-dir>
 ```
 
-OR if you would like to locally develop Judo:
+## Building for Local Development
+
+If you would like to locally develop Judo:
 
 ```bash
 # clone the judo repository
@@ -60,7 +62,7 @@ cd judo
 npm i
 
 # next build the src/ files into dist/
-npm run
+npm run build
 
 # finally link the binary executable
 npm link

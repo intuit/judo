@@ -1,3 +1,19 @@
+# v0.0.15 (Sat Jan 26 2019)
+
+#### 🐛  Bug Fix
+
+- 11 - Adds installation manual to setup Judo locally [#14](https://github.com/intuit/judo/pull/14) ([@athityakumar](https://github.com/athityakumar))
+
+#### 🏠  Internal
+
+- removing python dependency in README [#10](https://github.com/intuit/judo/pull/10) ([@ejfrancis](https://github.com/ejfrancis))
+
+#### 📝  Documentation
+
+- Remove old sections from README.md [#13](https://github.com/intuit/judo/pull/13) ([@hipstersmoothie](https://github.com/hipstersmoothie))
+
+---
+
 # v0.0.14 (Thu Jan 24 2019)
 
 #### 🏠  Internal

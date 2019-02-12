@@ -43,6 +43,9 @@ const mockChildSpawnWorked = (writeMock, options = { timeout: 600 }) => {
         }
       })
     },
+    stderr: {
+      on: jest.fn()
+    },
     stdin: {
       write: writeMock
     }

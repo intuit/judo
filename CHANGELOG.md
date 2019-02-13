@@ -1,3 +1,12 @@
+# v0.0.16 (Wed Feb 13 2019)
+
+#### 🐛  Bug Fix
+
+- 17 - Capture stderr for comparison with output [#18](https://github.com/intuit/judo/pull/18) ([@crshnburn](https://github.com/crshnburn))
+- added png logo [#16](https://github.com/intuit/judo/pull/16) ([@ejfrancis](https://github.com/ejfrancis))
+
+---
+
 # v0.0.15 (Sat Jan 26 2019)
 
 #### 🐛  Bug Fix

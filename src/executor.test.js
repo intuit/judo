@@ -43,6 +43,13 @@ const mockChildSpawnWorked = (writeMock, options = { timeout: 600 }) => {
         }
       })
     },
+    stderr: {
+      on: jest.fn((event, cb) => {
+        if (event === 'data') {
+          return cb('error world!'); //eslint-disable-line
+        }
+      })
+    },
     stdin: {
       write: writeMock
     }
@@ -191,7 +198,7 @@ describe('executor', () => {
         err = e;
       }
 
-      expect(res).toEqual({ output: 'hello world!', code: 0 });
+      expect(res).toEqual({ output: 'hello world!error world!', code: 0 });
       expect(err).toBeUndefined();
       expect(writeMock).toHaveBeenCalledWith('my response\r');
     });

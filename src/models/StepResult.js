@@ -1,9 +1,10 @@
 class StepResult {
-  constructor ({ stepFilePath, stepName, passed, duration } = {}) {
+  constructor ({ stepFilePath, stepName, passed, duration, errorMessage } = {}) {
     this.stepFilePath = stepFilePath;
     this.stepName = stepName;
     this.passed = passed;
     this.duration = duration;
+    this.errorMessage = errorMessage;
 
     return this;
   }
@@ -42,6 +43,15 @@ class StepResult {
 
   getDuration () {
     return this.duration;
+  }
+
+  setErrorMessage (errorMessage) {
+    this.errorMessage = errorMessage;
+    return this;
+  }
+
+  getErrorMessage () {
+    return this.errorMessage;
   }
 }
 

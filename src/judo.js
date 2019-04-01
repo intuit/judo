@@ -74,7 +74,7 @@ const run = async () => {
         // check if done with all files
         if (numStepFilesComplete === numStepFiles) {
           if (options.junitReport) {
-            junitResults({ stepResults: allStepResults });
+            fs.writeFileSync('./junit.xml', junitResults({ stepResults: allStepResults }));
           }
           return handleResults({ stepResults: allStepResults });
         }
@@ -260,7 +260,7 @@ const junitResults = ({ stepResults }) => {
     xml += `      </testcase>\n`;
   });
   xml += `   </testsuite>\n</testsuites>`;
-  fs.writeFileSync('./junit.xml', xml);
+  return xml;
 };
 
 /**
@@ -319,5 +319,6 @@ if (process.env.NODE_ENV !== 'test') {
 
 export {
   handleResults,
-  run
+  run,
+  junitResults
 };

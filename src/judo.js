@@ -20,13 +20,17 @@ const run = async () => {
   const optionsFlags = process.argv.slice(3);
 
   let options = {
-    timeout: 120000
+    timeout: 120000,
+    junitReport: false
   };
 
   // gather options flags
   optionsFlags.forEach((flag, i) => {
     if (flag === '--timeout' || flag === '-t') {
       options.timeout = optionsFlags[i + 1];
+    }
+    if (flag === '--junitreport' || flag === '-j') {
+      options.junitReport = true;
     }
   });
 
@@ -69,7 +73,9 @@ const run = async () => {
 
         // check if done with all files
         if (numStepFilesComplete === numStepFiles) {
-          junitResults({ stepResults: allStepResults });
+          if (options.junitReport) {
+            junitResults({ stepResults: allStepResults });
+          }
           return handleResults({ stepResults: allStepResults });
         }
 
@@ -247,7 +253,7 @@ const junitResults = ({ stepResults }) => {
       xml += `   <testsuite name="${stepResult.getStepFilePath()}">\n`
       previousStepFilePath = stepResult.getStepFilePath();
     }
-    xml += `      <testcase classname="${stepResult.getStepName()}" time="${truncateAfterDecimal(stepResult.getDuration() / 1000, 5)}">\n`;
+    xml += `      <testcase name="${stepResult.getStepName()}" time="${truncateAfterDecimal(stepResult.getDuration() / 1000, 5)}">\n`;
     if(!stepResult.getPassed()){
       xml += `         <failure message="${stepResult.getErrorMessage()}"></failure>\n`;
     }

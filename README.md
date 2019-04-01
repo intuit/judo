@@ -83,6 +83,8 @@ judo <directory>
 
 - `--timeout <n>` : sets a max time in milliseconds that a run step can take before being considered a timeout. ex (`--timeout 1500`)
 
+- `--junitreport | -j` : writes the test results to a file called `junit.xml` in the current working directory. This report is in xUnit format.
+
 ### Creating Tests with YAML files
 
 Judo organizes tests into "test suites", which comprise of "test scenarios", and each test scenario can contain "steps". A typical test directory may look like this:

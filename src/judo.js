@@ -247,21 +247,21 @@ const junitResults = ({ stepResults }) => {
   xml += `<testsuites name="Judo Tests">\n`;
   stepResults.forEach(stepResult => {
     if (stepResult.getStepFilePath() !== previousStepFilePath) {
-      if(previousStepFilePath !== ''){
+      if (previousStepFilePath !== '') {
         xml += `   </testsuite>\n`;
       }
-      xml += `   <testsuite name="${stepResult.getStepFilePath()}">\n`
+      xml += `   <testsuite name="${stepResult.getStepFilePath()}">\n`;
       previousStepFilePath = stepResult.getStepFilePath();
     }
     xml += `      <testcase name="${stepResult.getStepName()}" time="${truncateAfterDecimal(stepResult.getDuration() / 1000, 5)}">\n`;
-    if(!stepResult.getPassed()){
+    if (!stepResult.getPassed()) {
       xml += `         <failure message="${stepResult.getErrorMessage()}"></failure>\n`;
     }
     xml += `      </testcase>\n`;
-  })
+  });
   xml += `   </testsuite>\n</testsuites>`;
   fs.writeFileSync('./junit.xml', xml);
-}
+};
 
 /**
  * Handles the results of all test suites and scenarios after Judo is done running. Logs results

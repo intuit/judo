@@ -4,7 +4,7 @@ import { StepResult } from './models/StepResult';
 import * as loggerModule from './logger';
 import * as fileUtilModule from './common/file-util';
 import * as executorModule from './executor';
-import { handleResults, run, junitResults } from './judo';
+import { handleResults, run } from './judo';
 
 jest.mock('js-yaml');
 jest.mock('fs');
@@ -193,24 +193,6 @@ describe('judo', () => {
       expect(loggerModule.logger.summary).toHaveBeenCalledWith(
         'Failed:      ' + 1
       );
-    });
-  });
-
-  describe('junitResults', () => {
-    it('reports successful results', () => {
-      const stepResults = mockStepResultsPassed;
-
-      const xml = junitResults({ stepResults });
-
-      expect(xml).toEqual('<testsuites name="Judo Tests">\n   <testsuite name="path1">\n      <testcase name="name1" time="0.005">\n      </testcase>\n   </testsuite>\n   <testsuite name="path2">\n      <testcase name="name2" time="0.01">\n      </testcase>\n   </testsuite>\n</testsuites>');
-    });
-
-    it('reports the error message for a failed test', () => {
-      const stepResults = mockStepResultsFailed;
-
-      const xml = junitResults({ stepResults });
-
-      expect(xml).toEqual('<testsuites name="Judo Tests">\n   <testsuite name="path1">\n      <testcase name="name1" time="0.005">\n         <failure message="undefined"></failure>\n      </testcase>\n   </testsuite>\n   <testsuite name="path2">\n      <testcase name="name2" time="0.01">\n         <failure message="undefined"></failure>\n      </testcase>\n   </testsuite>\n</testsuites>');
     });
   });
 

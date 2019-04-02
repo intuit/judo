@@ -9,6 +9,7 @@ import { execute, executePrerequisites } from './executor';
 import { listFilesRecursively, isFile, isDirectory } from './common/file-util';
 import { truncateAfterDecimal } from './common/number-util';
 import { StepResult } from './models/StepResult';
+import { getReporter } from './reporters/get-reporter';
 import stringToRegexp from 'string-to-regexp';
 
 /**
@@ -73,8 +74,9 @@ const run = async () => {
 
         // check if done with all files
         if (numStepFilesComplete === numStepFiles) {
-          if (options.junitReport) {
-            fs.writeFileSync('./junit.xml', junitResults({ stepResults: allStepResults }));
+          const reporter = getReporter({ options: options, stepResults: allStepResults });
+          if (reporter) {
+            fs.writeFileSync(reporter.outputFile, reporter.generateReport());
           }
           return handleResults({ stepResults: allStepResults });
         }
@@ -240,29 +242,6 @@ const executeRunStep = async (stepName, runStep, { timeout }) => {
   }
 };
 
-const junitResults = ({ stepResults }) => {
-  let previousStepFilePath = '';
-
-  let xml = '';
-  xml += `<testsuites name="Judo Tests">\n`;
-  stepResults.forEach(stepResult => {
-    if (stepResult.getStepFilePath() !== previousStepFilePath) {
-      if (previousStepFilePath !== '') {
-        xml += `   </testsuite>\n`;
-      }
-      xml += `   <testsuite name="${stepResult.getStepFilePath()}">\n`;
-      previousStepFilePath = stepResult.getStepFilePath();
-    }
-    xml += `      <testcase name="${stepResult.getStepName()}" time="${truncateAfterDecimal(stepResult.getDuration() / 1000, 5)}">\n`;
-    if (!stepResult.getPassed()) {
-      xml += `         <failure message="${stepResult.getErrorMessage()}"></failure>\n`;
-    }
-    xml += `      </testcase>\n`;
-  });
-  xml += `   </testsuite>\n</testsuites>`;
-  return xml;
-};
-
 /**
  * Handles the results of all test suites and scenarios after Judo is done running. Logs results
  * to console and exits with the correct code.
@@ -319,6 +298,5 @@ if (process.env.NODE_ENV !== 'test') {
 
 export {
   handleResults,
-  run,
-  junitResults
+  run
 };

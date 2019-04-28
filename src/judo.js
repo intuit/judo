@@ -9,6 +9,7 @@ import { execute, executePrerequisites } from './executor';
 import { listFilesRecursively, isFile, isDirectory } from './common/file-util';
 import { truncateAfterDecimal } from './common/number-util';
 import { StepResult } from './models/StepResult';
+import { getReporter } from './reporters/get-reporter';
 import stringToRegexp from 'string-to-regexp';
 
 /**
@@ -20,13 +21,17 @@ const run = async () => {
   const optionsFlags = process.argv.slice(3);
 
   let options = {
-    timeout: 120000
+    timeout: 120000,
+    junitReport: false
   };
 
   // gather options flags
   optionsFlags.forEach((flag, i) => {
     if (flag === '--timeout' || flag === '-t') {
       options.timeout = optionsFlags[i + 1];
+    }
+    if (flag === '--junitreport' || flag === '-j') {
+      options.junitReport = true;
     }
   });
 
@@ -69,6 +74,10 @@ const run = async () => {
 
         // check if done with all files
         if (numStepFilesComplete === numStepFiles) {
+          const reporter = getReporter({ options: options, stepResults: allStepResults });
+          if (reporter) {
+            fs.writeFileSync(reporter.outputFile, reporter.generateReport());
+          }
           return handleResults({ stepResults: allStepResults });
         }
 
@@ -130,6 +139,7 @@ const runStepFile = async (yamlFilePath, options) => {
       const time = truncateAfterDecimal(thisStepResult.getDuration(), 5);
       logger.error(`FAILED "${stepName}": ${e.message} (${time}ms)`);
       thisStepResult.setPassed(false);
+      thisStepResult.setErrorMessage(e.message);
     }
 
     thisStepFileResults.push(thisStepResult);

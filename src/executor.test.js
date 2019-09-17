@@ -9,6 +9,8 @@ const mockLogger = () => {
   loggerModule.logger.success = jest.fn();
   loggerModule.logger.error = jest.fn();
   loggerModule.logger.logOutput = jest.fn();
+  loggerModule.logger.logStdout = jest.fn();
+  loggerModule.logger.logStderr = jest.fn();
 };
 
 const mockExecWorked = () => {
@@ -168,8 +170,34 @@ describe('executor', () => {
         ...opts,
         stdio: ['pipe', 'pipe', 'pipe']
       });
-      expect(loggerModule.logger.logOutput).toHaveBeenCalledWith(
+      expect(loggerModule.logger.logStdout).toHaveBeenCalledWith(
         'hello world!'
+      );
+    });
+    it('creates new child process, logs errors as its emitted,', async () => {
+      mockLogger();
+
+      let writeMock = jest.fn();
+
+      mockChildSpawnWorked(writeMock);
+
+      const cmd = 'echo';
+      const args = ['hello world!', '1>&2'];
+      const opts = {
+        argsString: '"hello world!"',
+        cwd: undefined,
+        when: [],
+        timeout: 5000
+      };
+
+      await execute(cmd, args, opts);
+
+      expect(childProcess.spawn).toHaveBeenCalledWith(cmd, args, {
+        ...opts,
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+      expect(loggerModule.logger.logStderr).toHaveBeenCalledWith(
+          'error world!'
       );
     });
     it('creates new child process, and writes "when" responses to child stdin', async () => {

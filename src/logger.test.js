@@ -39,6 +39,32 @@ describe('logger', () => {
     );
   });
 
+  it('logs [STDERR] + message for logStderr()', () => {
+    global.console.log = jest.fn();
+
+    logger.logStderr(mockMessage);
+
+    expect(global.console.log).toHaveBeenCalledWith(
+        expect.stringContaining('[STDERR]')
+    );
+    expect(global.console.log).toHaveBeenCalledWith(
+        expect.stringContaining(mockMessage)
+    );
+  });
+
+  it('logs [STDOUT] + message for logStdout()', () => {
+    global.console.log = jest.fn();
+
+    logger.logStdout(mockMessage);
+
+    expect(global.console.log).toHaveBeenCalledWith(
+        expect.stringContaining('[STDOUT]')
+    );
+    expect(global.console.log).toHaveBeenCalledWith(
+        expect.stringContaining(mockMessage)
+    );
+  });
+
   it('logs [WARN] + message for warn()', () => {
     global.console.log = jest.fn();
 

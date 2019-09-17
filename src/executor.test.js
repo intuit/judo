@@ -197,7 +197,7 @@ describe('executor', () => {
         stdio: ['pipe', 'pipe', 'pipe']
       });
       expect(loggerModule.logger.logStderr).toHaveBeenCalledWith(
-          'error world!'
+        'error world!'
       );
     });
     it('creates new child process, and writes "when" responses to child stdin', async () => {

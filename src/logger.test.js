@@ -45,10 +45,10 @@ describe('logger', () => {
     logger.logStderr(mockMessage);
 
     expect(global.console.log).toHaveBeenCalledWith(
-        expect.stringContaining('[STDERR]')
+      expect.stringContaining('[STDERR]')
     );
     expect(global.console.log).toHaveBeenCalledWith(
-        expect.stringContaining(mockMessage)
+      expect.stringContaining(mockMessage)
     );
   });
 
@@ -58,10 +58,10 @@ describe('logger', () => {
     logger.logStdout(mockMessage);
 
     expect(global.console.log).toHaveBeenCalledWith(
-        expect.stringContaining('[STDOUT]')
+      expect.stringContaining('[STDOUT]')
     );
     expect(global.console.log).toHaveBeenCalledWith(
-        expect.stringContaining(mockMessage)
+      expect.stringContaining(mockMessage)
     );
   });
 

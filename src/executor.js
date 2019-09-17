@@ -73,19 +73,16 @@ export const execute = (command, args = [], opts = {}) => {
     let output = '';
     let childInputWrite;
 
-    child.stdout.on('data', data => {
+    const processOutput = (data) => {
       clearTimeout(timeoutControl);
       timeoutControl = startNoOutputTimeout(opts.timeout, commandStr, reject);
-
-      const childData = data.toString();
-      logger.logOutput(childData);
-      output += childData;
+      output += data;
 
       if (opts.when) {
         opts.when.forEach(whenStep => {
           if (
             !childInputWrite &&
-            childData.indexOf(whenStep.output) !== -1 &&
+            data.indexOf(whenStep.output) !== -1 &&
             !whenStep.done
           ) {
             whenStep.done = true;
@@ -94,12 +91,18 @@ export const execute = (command, args = [], opts = {}) => {
           }
         });
       }
-    });
+    };
+
+    child.stdout.on('data', data => {
+      const childData = data.toString();
+      logger.logOutput(childData);
+      processOutput(childData)
+    })
 
     child.stderr.on('data', data => {
       const childData = data.toString();
-      logger.logOutput(childData);
-      output += childData;
+      logger.logStderr(childData);
+      processOutput(childData)
     });
 
     // write inputs to child process on an interval, avoids immediate execution race condition

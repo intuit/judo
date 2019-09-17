@@ -148,7 +148,7 @@ describe('executor', () => {
   });
 
   describe('execute', () => {
-    it('creates new child process, logs output as its emitted,', async () => {
+    it('creates new child process, logs output as its emitted, joins args with comma', async () => {
       mockLogger();
 
       let writeMock = jest.fn();
@@ -156,10 +156,10 @@ describe('executor', () => {
       mockChildSpawnWorked(writeMock);
 
       const cmd = 'echo';
-      const args = ['hello world!'];
+      const args = ['hello', 'world!'];
       const opts = {
-        argsString: '"hello world!"',
-        cwd: undefined,
+        // argsString: '"hello world!"',
+        cwd: '.',
         when: [],
         timeout: 5000
       };

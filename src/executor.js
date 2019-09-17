@@ -96,13 +96,13 @@ export const execute = (command, args = [], opts = {}) => {
     child.stdout.on('data', data => {
       const childData = data.toString();
       logger.logOutput(childData);
-      processOutput(childData)
-    })
+      processOutput(childData);
+    });
 
     child.stderr.on('data', data => {
       const childData = data.toString();
       logger.logStderr(childData);
-      processOutput(childData)
+      processOutput(childData);
     });
 
     // write inputs to child process on an interval, avoids immediate execution race condition

@@ -95,7 +95,7 @@ export const execute = (command, args = [], opts = {}) => {
 
     child.stdout.on('data', data => {
       const childData = data.toString();
-      logger.logOutput(childData);
+      logger.logStdout(childData);
       processOutput(childData);
     });
 

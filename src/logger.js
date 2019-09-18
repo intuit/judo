@@ -7,8 +7,11 @@ class Logger {
   logOutput (...args) {
     console.log(colors.white('[OUTPUT]  ', ...args));
   }
+  logStdout (...args) {
+    console.log(colors.green('[STDOUT]  ', ...args));
+  }
   logStderr (...args) {
-    console.log(colors.yellow('[STDOUT]  ', ...args));
+    console.log(colors.yellow('[STDERR]  ', ...args));
   }
   warn (...args) {
     console.log(colors.magenta('[WARN]    ', ...args));

@@ -1,3 +1,20 @@
+# v0.1.0 (Mon Sep 23 2019)
+
+#### 🚀  Enhancement
+
+- Bump handlebars from 4.0.12 to 4.1.2 [#22](https://github.com/intuit/judo/pull/22) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+- Write results in xUnit format [#19](https://github.com/intuit/judo/pull/19) ([@crshnburn](https://github.com/crshnburn))
+
+#### 🐛  Bug Fix
+
+- broke semistandard with ONE :poop:-ING SPACE [#28](https://github.com/intuit/judo/pull/28) (jelwell@yahoo.com)
+- Fix/25 review questions [#27](https://github.com/intuit/judo/pull/27) (jelwell@yahoo.com)
+- Fixes issue #25 - STDOUT/STDERR not being caught [#26](https://github.com/intuit/judo/pull/26) (jelwell@yahoo.com)
+- Bump merge from 1.2.0 to 1.2.1 [#21](https://github.com/intuit/judo/pull/21) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+- Bump lodash from 4.17.11 to 4.17.14 [#23](https://github.com/intuit/judo/pull/23) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+---
+
 # v0.0.16 (Wed Feb 13 2019)
 
 #### 🐛  Bug Fix

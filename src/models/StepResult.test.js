@@ -1,7 +1,7 @@
 import { StepResult } from './StepResult';
 
 describe('StepResult', () => {
-  it ('constructs with no parameters', () => {
+  it('constructs with no parameters', () => {
     const stepResult = new StepResult();
     expect(stepResult.getStepName()).toBeUndefined();
   });

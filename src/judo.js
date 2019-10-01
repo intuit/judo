@@ -108,7 +108,7 @@ const runStepFile = async (yamlFilePath, options) => {
   const fileContents = fs.readFileSync(yamlFilePath);
   let runSteps = {};
   // first step for every file is gonna be parse itself
-  let runStepNames = ["parseYamlFile"];
+  let runStepNames = ['parseYamlFile'];
   let parseErrorMessage;
   try {
     const yamlFile = yaml.safeLoad(fileContents, 'utf8');
@@ -144,7 +144,7 @@ const runStepFile = async (yamlFilePath, options) => {
       logger.success(`PASSED "${stepName}" (${time}ms)`);
     } catch (e) {
       // if the yaml parse fails, the final message will be the reason why it failed.
-      const errorMessage = parseErrorMessage ? parseErrorMessage: e.message;
+      const errorMessage = parseErrorMessage || e.message;
       const endTime = new Date();
       thisStepResult.setDuration(endTime - startTime);
       const time = truncateAfterDecimal(thisStepResult.getDuration(), 5);

@@ -412,6 +412,23 @@ describe('judo', () => {
         );
         expect(loggerModule.logger.error).toHaveBeenCalledTimes(0);
       });
+      it('runs a single step file with invalid yaml', async () => {
+        const stepFilePath = 'tests/my-test.xml';
+        mockLogger();
+        global.process.exit = jest.fn();
+        global.process.argv = ['node', 'judo.js', stepFilePath];
+        fileUtilModule.isFile = jest.fn(() => true);
+        fileUtilModule.isDirectory = jest.fn(() => false);
+        yaml.safeLoad = jest.fn(() => new Error('invalid parsing'));
+        executorModule.executePrerequisites = jest.fn(async () => {});
+        executorModule.execute = jest.fn();
+
+        await run();
+
+        expect(executorModule.execute).toHaveBeenCalledTimes(0);
+        expect(global.process.exit).toHaveBeenCalledWith(1);
+        expect(loggerModule.logger.error).toHaveBeenCalledTimes(1);
+      });
     });
     describe('run directory of files', () => {
       it('runs two step files if process arguments is a directory path containing two files, runs the two steps in those files, and passes if all pass', async () => {

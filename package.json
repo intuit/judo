@@ -58,6 +58,7 @@
     "auto-release-cli": "^2.5.5",
     "babel-core": "~7.0.0-bridge.0",
     "babel-jest": "~23.6.0",
+    "husky": "^3.0.5",
     "jest": "~23.6.0",
     "rimraf": "~2.6.2",
     "semistandard": "~12.0.1",
@@ -85,5 +86,11 @@
   },
   "auto": {
     "onlyPublishWithReleaseLabel": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint:fix",
+      "pre-push": "npm run lint:fix && npm run test"
+    }
   }
 }

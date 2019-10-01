@@ -1,3 +1,11 @@
+# v0.1.1 (Tue Oct 01 2019)
+
+#### 🐛  Bug Fix
+
+- 20 - Add Husky Configuration [#31](https://github.com/intuit/judo/pull/31) ([@ktamilvanan](https://github.com/ktamilvanan))
+
+---
+
 # v0.1.0 (Mon Sep 23 2019)
 
 #### 🚀  Enhancement

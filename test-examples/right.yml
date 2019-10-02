@@ -1,8 +1,0 @@
-run:
-  helloWorld:                  # a "helloWorld" test suite "step"
-    command: 'echo "hi!"'
-    expectCode: 0
-    outputContains:
-    - 'hi!'
-    outputDoesntContain:
-    - 'bye!'

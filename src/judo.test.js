@@ -427,7 +427,7 @@ describe('judo', () => {
 
         expect(executorModule.execute).toHaveBeenCalledTimes(0);
         expect(global.process.exit).toHaveBeenCalledWith(1);
-        expect(loggerModule.logger.error).toHaveBeenCalledTimes(1);
+        expect(loggerModule.logger.error).toHaveBeenCalledTimes(2);
       });
     });
     describe('run directory of files', () => {
@@ -520,7 +520,7 @@ describe('judo', () => {
 
         expect(executorModule.execute).toHaveBeenCalledTimes(0);
         expect(global.process.exit).toHaveBeenCalledWith(1);
-        expect(loggerModule.logger.error).toHaveBeenCalledTimes(1);
+        expect(loggerModule.logger.error).toHaveBeenCalledTimes(2);
       });
     });
   });

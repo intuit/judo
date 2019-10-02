@@ -1,0 +1,5 @@
+npm_postCheckout_Sandbox_CreateStory_Title_GitStatusCheck:
+    cwd: ./judo-temp/judo-githooks-npm-sandbox
+    command: git status
+    outputContains:
+  - /On branch ZZZ-[0-9]{0,10}\/no-id/

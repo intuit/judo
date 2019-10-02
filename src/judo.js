@@ -106,10 +106,19 @@ const run = async () => {
  */
 const runStepFile = async (yamlFilePath, options) => {
   const fileContents = fs.readFileSync(yamlFilePath);
-  const yamlFile = yaml.safeLoad(fileContents, 'utf8');
-  // logger.info('Running step file: ' + yamlFilePath);
-  const runSteps = yamlFile.run;
-  const runStepNames = Object.keys(runSteps);
+  let runSteps = {};
+  // first step for every file is gonna be parse itself
+  let runStepNames = [];
+  try {
+    const yamlFile = yaml.safeLoad(fileContents, 'utf8');
+    // logger.info('Running step file: ' + yamlFilePath);
+    runSteps = yamlFile.run;
+    runStepNames = Object.keys(runSteps);
+  } catch (e) {
+    logger.error(`YAML PARSER FAILED on file ${yamlFilePath}: ${e.message}`);
+    process.exit(1);
+  }
+
   const numTotal = runStepNames.length;
   const thisStepFileResults = [];
 

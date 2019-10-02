@@ -1,3 +1,15 @@
+# v0.2.0 (Wed Oct 02 2019)
+
+#### 🚀  Enhancement
+
+- 5 - Adding error handler for invalid YAML [#32](https://github.com/intuit/judo/pull/32) (evanjfrancis@gmail.com)
+
+#### 🐛  Bug Fix
+
+- Bump mixin-deep from 1.3.1 to 1.3.2 [#24](https://github.com/intuit/judo/pull/24) ([@dependabot[bot]](https://github.com/dependabot[bot]) [@ejfrancis](https://github.com/ejfrancis))
+
+---
+
 # v0.1.1 (Tue Oct 01 2019)
 
 #### 🐛  Bug Fix

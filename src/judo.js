@@ -115,7 +115,7 @@ const runStepFile = async (yamlFilePath, options) => {
     runSteps = yamlFile.run;
     runStepNames = Object.keys(runSteps);
   } catch (e) {
-    logger.error(`FAILED "YAML parsing" on file ${yamlFilePath} has failed: ${e.message}`);
+    logger.error(`YAML PARSER FAILED on file ${yamlFilePath}: ${e.message}`);
     process.exit(1);
   }
 

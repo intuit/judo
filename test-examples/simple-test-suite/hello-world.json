@@ -1,0 +1,14 @@
+{
+    "run": {
+      "helloWorld": {
+        "command": "echo \"hi!\"",
+        "expectCode": 0,
+        "outputContains": [
+          "hi!"
+        ],
+        "outputDoesntContain": [
+          "bye!"
+        ]
+      }
+    }
+  }

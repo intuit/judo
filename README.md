@@ -75,7 +75,10 @@ The Judo framework interacts with CLIs and provides assertions against the outpu
 # point to a "test scenario" file
 judo <file>.yml
 
-# or point to a "test suite" directory of "test suite" yaml files
+# point to a "test scenario" JSON file
+judo <file>.json
+
+# or point to a "test suite" directory of "test suite" yaml files. See options section for the optional flag to support JSON files.
 judo <directory>
 ```
 
@@ -84,6 +87,8 @@ judo <directory>
 - `--timeout <n>` : sets a max time in milliseconds that a run step can take before being considered a timeout. ex (`--timeout 1500`)
 
 - `--junitreport | -j` : writes the test results to a file called `junit.xml` in the current working directory. This report is in xUnit format.
+
+- `--includejsonfiles | -ij` : include `.json` test files in the test directory along with `.yml` files.
 
 ### Creating Tests with YAML files
 

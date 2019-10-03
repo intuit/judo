@@ -1,3 +1,11 @@
+# v0.3.0 (Thu Oct 03 2019)
+
+#### 🚀  Enhancement
+
+- 34: Adding support for JSON files [#33](https://github.com/intuit/judo/pull/33) ([@anands](https://github.com/anands))
+
+---
+
 # v0.2.0 (Wed Oct 02 2019)
 
 #### 🚀  Enhancement

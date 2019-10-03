@@ -502,6 +502,77 @@ describe('judo', () => {
           expect.stringContaining('FAILED "goodbyeWorld"')
         );
       });
+      it('runs two step files if process arguments is a directory path containing two JSON files, runs the two steps in those files, and passes if all pass', async () => {
+        const stepFilePath = 'tests/my-test.xml';
+        mockLogger();
+        global.process.exit = jest.fn();
+        global.process.argv = ['node', 'judo.js', stepFilePath, '--includejsonfiles'];
+        fileUtilModule.isFile = jest.fn(() => false);
+        fileUtilModule.isDirectory = jest.fn(() => true);
+        fileUtilModule.listFilesRecursively = () => [
+          'filea.json',
+          'somdir/fileb.json'
+        ];
+        yaml.safeLoad = jest
+          .fn()
+          .mockImplementationOnce(path => mockStepFileSingle)
+          .mockImplementationOnce(path => mockStepFileTwo);
+
+        executorModule.executePrerequisites = jest.fn(async () => {});
+        executorModule.execute = jest
+          .fn()
+          .mockImplementationOnce(async () => helloWorldMockExecuteOutput)
+          .mockImplementationOnce(async () => helloWorldAgainMockExecuteOutput)
+          .mockImplementationOnce(async () => goodbyeWorldMockExecuteOutput);
+
+        await run();
+
+        expect(executorModule.executePrerequisites).toHaveBeenCalledTimes(2);
+        expect(executorModule.executePrerequisites).toHaveBeenCalledWith({
+          prerequisites: ['echo "this is a prereq command"'],
+          cwd: undefined
+        });
+        expect(executorModule.execute).toHaveBeenCalledTimes(3); // helloWorld, helloWorldAgain, goodbyeWorld
+        expect(executorModule.execute).toHaveBeenCalledWith(
+          'echo',
+          ['hello world!'],
+          {
+            argsString: '"hello world!"',
+            cwd: undefined,
+            when: [],
+            timeout: 120000
+          }
+        );
+        expect(executorModule.execute).toHaveBeenCalledWith(
+          'echo',
+          ['hello again world!'],
+          {
+            argsString: '"hello again world!"',
+            cwd: undefined,
+            when: [],
+            timeout: 120000
+          }
+        );
+        expect(executorModule.execute).toHaveBeenCalledWith(
+          'echo',
+          ['goodbye world!'],
+          {
+            argsString: '"goodbye world!"',
+            cwd: undefined,
+            when: [],
+            timeout: 120000
+          }
+        );
+        expect(loggerModule.logger.success).toHaveBeenCalledWith(
+          expect.stringContaining('PASSED "helloWorld"')
+        );
+        expect(loggerModule.logger.success).toHaveBeenCalledWith(
+          expect.stringContaining('PASSED "helloWorldAgain"')
+        );
+        expect(loggerModule.logger.error).toHaveBeenCalledWith(
+          expect.stringContaining('FAILED "goodbyeWorld"')
+        );
+      });
       it('logs error and exits with code 1 if error occurs running step file', async () => {
         const stepFilePath = 'tests/my-test.xml';
         mockLogger();

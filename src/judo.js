@@ -33,6 +33,9 @@ const run = async () => {
     if (flag === '--junitreport' || flag === '-j') {
       options.junitReport = true;
     }
+    if (flag === '--includejsonfiles' || flag === '-ij') {
+      options.includeJSONFiles = true;
+    }
   });
 
   if (!yamlFilePath) {
@@ -54,7 +57,7 @@ const run = async () => {
   } else if (isDirectory(yamlFilePath)) {
     // if argument is a directory, run against all files in that dir and subdirs recursively
     const allStepFiles = listFilesRecursively(yamlFilePath).filter(
-      file => file.indexOf('.yml') !== -1
+      file => file.indexOf('.yml') !== -1 || (options.includeJSONFiles && file.indexOf('.json') !== -1)
     );
     const numStepFiles = allStepFiles.length;
 

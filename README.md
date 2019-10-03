@@ -75,7 +75,10 @@ The Judo framework interacts with CLIs and provides assertions against the outpu
 # point to a "test scenario" file
 judo <file>.yml
 
-# or point to a "test suite" directory of "test suite" yaml files
+# point to a "test scenario" JSON file
+judo <file>.json
+
+# or point to a "test suite" directory of "test suite" yaml files. See options section for the optional flag to support JSON files.
 judo <directory>
 ```
 
@@ -84,6 +87,8 @@ judo <directory>
 - `--timeout <n>` : sets a max time in milliseconds that a run step can take before being considered a timeout. ex (`--timeout 1500`)
 
 - `--junitreport | -j` : writes the test results to a file called `junit.xml` in the current working directory. This report is in xUnit format.
+
+- `--includejsonfiles | -ij` : include `.json` test files in the test directory along with `.yml` files.
 
 ### Creating Tests with YAML files
 
@@ -175,6 +180,54 @@ In this example, a new child process will be spawned which runs all of the comma
 - the total `stdout` and `stderr` does NOT contain `bye!`
 
 After that it will spawn another child process and run the `echo "hi!"` command assertion described in the first example.
+
+### Complete JSON Example
+
+This is a more complete example using JSON and similar to the above YML example, running multiple commands and responding to the `stdin` when appropriate:
+
+```js
+{
+  "run": {
+    "someCommand": {
+      "prerequisiteCwd": "/Users/efrancis/devel/DEVGRU/judo/temp/",
+      "prerequisites": [
+        "echo \"this command will run before the command being tested\"",
+        "echo \"this will too\"",
+        "git clone <some repo>",
+        "cd <some-repo>"
+      ],
+      "command": "git checkout -b \"some-feature\"",
+      "cwd": "/Users/hansolo/test",
+      "when": [
+        {
+          "What do you fly?": "Millenium Falcon"
+        },
+        {
+          "Did you shoot first?": "y"
+        }
+      ],
+      "expectCode": 0,
+      "outputContains": [
+        "This string should be in the complete stdout/stderr output",
+        "/This is a regex[!]+/g/"
+      ],
+      "outputDoesntContain": [
+        "This string should NOT be in the complete stdout/stderr output"
+      ]
+    },
+    "anotherCommand": {
+      "command": "echo \"hi!\"",
+      "expectCode": 0,
+      "outputContains": [
+        "hi!"
+      ],
+      "outputDoesntContain": [
+        "bye!"
+      ]
+    }
+  }
+}
+```
 
 ## How it Works
 

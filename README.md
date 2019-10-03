@@ -181,6 +181,54 @@ In this example, a new child process will be spawned which runs all of the comma
 
 After that it will spawn another child process and run the `echo "hi!"` command assertion described in the first example.
 
+### Complete JSON Example
+
+This is a more complete example using JSON and similar to the above YML example, running multiple commands and responding to the `stdin` when appropriate:
+
+```js
+{
+  "run": {
+    "someCommand": {
+      "prerequisiteCwd": "/Users/efrancis/devel/DEVGRU/judo/temp/",
+      "prerequisites": [
+        "echo \"this command will run before the command being tested\"",
+        "echo \"this will too\"",
+        "git clone <some repo>",
+        "cd <some-repo>"
+      ],
+      "command": "git checkout -b \"some-feature\"",
+      "cwd": "/Users/hansolo/test",
+      "when": [
+        {
+          "What do you fly?": "Millenium Falcon"
+        },
+        {
+          "Did you shoot first?": "y"
+        }
+      ],
+      "expectCode": 0,
+      "outputContains": [
+        "This string should be in the complete stdout/stderr output",
+        "/This is a regex[!]+/g/"
+      ],
+      "outputDoesntContain": [
+        "This string should NOT be in the complete stdout/stderr output"
+      ]
+    },
+    "anotherCommand": {
+      "command": "echo \"hi!\"",
+      "expectCode": 0,
+      "outputContains": [
+        "hi!"
+      ],
+      "outputDoesntContain": [
+        "bye!"
+      ]
+    }
+  }
+}
+```
+
 ## How it Works
 
 Judo operates in the following order:

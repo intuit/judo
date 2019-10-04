@@ -1,3 +1,11 @@
+# v0.3.1 (Fri Oct 04 2019)
+
+#### 🐛  Bug Fix
+
+- #30 Update dependencies to pass security audit [#36](https://github.com/intuit/judo/pull/36) ([@vvscode](https://github.com/vvscode))
+
+---
+
 # v0.3.0 (Thu Oct 03 2019)
 
 #### 🚀  Enhancement

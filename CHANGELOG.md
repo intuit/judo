@@ -1,3 +1,11 @@
+# v0.3.2 (Tue Oct 08 2019)
+
+#### 🐛  Bug Fix
+
+- Update engines according to the documentation [#37](https://github.com/intuit/judo/pull/37) ([@ek-tereshko](https://github.com/ek-tereshko))
+
+---
+
 # v0.3.1 (Fri Oct 04 2019)
 
 #### 🐛  Bug Fix

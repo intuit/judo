@@ -22,7 +22,7 @@
     "url": "https://github.com/Intuit/judo"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.7.0"
   },
   "keywords": [
     "judo",

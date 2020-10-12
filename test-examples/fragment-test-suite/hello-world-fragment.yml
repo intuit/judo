@@ -1,0 +1,13 @@
+run:
+  testFragment:
+    prerequisiteCwd: .
+    prerequisites: 
+      $ref: '#/components/createTempFile'
+    command: cat /tmp/temp-dir/temp-file.txt
+    expectCode: 0
+    outputContains:
+    - this will be in the temp-file.txt
+components:
+  createTempFile:
+    - mkdir -p /tmp/temp-dir
+    - echo "this will be in the temp-file.txt" > /tmp/temp-dir/temp-file.txt

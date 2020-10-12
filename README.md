@@ -135,6 +135,23 @@ If the example `helloWorld` test above had `expectCode: 1` instead, the test wou
   <img src="./docs/screenshot-failed.png" />
 </p>
 
+### Using variable substitution
+
+Variable substitution is supported inside value strings using `{{variableName}}` syntax. All variables need to be declared inside the `vars` section in your test scenario like in the following example:
+
+```yml
+run:
+  helloWorld:
+    command: 'echo "{{hello}}"'
+    expectCode: 0
+    outputContains:
+    - '/hi!/g'
+    outputDoesntContain:
+    - '/bye!/g'
+vars:
+  hello: 'hi!'
+```
+
 ---
 
 ### Complete YAML Example

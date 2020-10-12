@@ -1,0 +1,10 @@
+run:
+  helloWorld:
+    command: 'echo "{{hello}}"'
+    expectCode: 0
+    outputContains:
+    - '/hi!/g'
+    outputDoesntContain:
+    - '/bye!/g'
+vars:
+  hello: 'hi!'

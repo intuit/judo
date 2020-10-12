@@ -11,6 +11,7 @@ import { truncateAfterDecimal } from './common/number-util';
 import { StepResult } from './models/StepResult';
 import { getReporter } from './reporters/get-reporter';
 import stringToRegexp from 'string-to-regexp';
+import mustache from 'mustache';
 
 /**
  * Main run function to initiate Judo. Discovers all files from provided CLI option,
@@ -117,6 +118,19 @@ const runStepFile = async (yamlFilePath, options) => {
     // logger.info('Running step file: ' + yamlFilePath);
     runSteps = yamlFile.run;
     runStepNames = Object.keys(runSteps);
+    if (yamlFile.vars) {
+      const view = yamlFile.vars;
+      const resolveVars = obj => {
+        Object.keys(obj).forEach((key) => {
+          if (typeof obj[key] === 'string') {
+            obj[key] = mustache.render(obj[key], view);
+          } else if (typeof obj[key] === 'object') {
+            resolveVars(obj[key]);
+          }
+        });
+      };
+      resolveVars(runSteps);
+    }
   } catch (e) {
     logger.error(`YAML PARSER FAILED on file ${yamlFilePath}: ${e.message}`);
     process.exit(1);

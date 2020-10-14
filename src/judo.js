@@ -120,6 +120,7 @@ const runStepFile = async (yamlFilePath, options) => {
     runStepNames = Object.keys(runSteps);
     if (yamlFile.vars) {
       const view = yamlFile.vars;
+      mustache.escape = text => text;
       const resolveVars = obj => {
         Object.keys(obj).forEach((key) => {
           if (typeof obj[key] === 'string') {

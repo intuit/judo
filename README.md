@@ -43,6 +43,15 @@ npm i -g @intuit/judo
 judo <tests-dir>
 ```
 
+OR if you don't have Node.js installed, but you do have brew on Mac OS X
+
+```bash
+brew install @intuit/judo
+
+# then run it anywhere from the command line
+judo <tests-dir>
+```
+
 ## Building for Local Development
 
 If you would like to locally develop Judo:

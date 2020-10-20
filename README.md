@@ -135,6 +135,35 @@ If the example `helloWorld` test above had `expectCode: 1` instead, the test wou
   <img src="./docs/screenshot-failed.png" />
 </p>
 
+### Importing test fragments
+
+Judo supports [JSON Reference](https://tools.ietf.org/html/draft-pbryan-zyp-json-ref-03) in test scenarios. This means you can create reusable test functionality modules and import them from your main test scenario using the `$ref` keyword. Imports can be done from a file, URL or another place within the same document.
+
+```yml
+# test-examples/fragment-test-suite/hello-world-fragment.yml
+run:
+  testFragment:
+    prerequisiteCwd: .
+    prerequisites: 
+      $ref: '#/components/createTempFile'
+    command: cat /tmp/temp-dir/temp-file.txt
+    expectCode: 0
+    outputContains:
+    - this will be in the temp-file.txt
+components:
+  createTempFile:
+    - mkdir -p /tmp/temp-dir
+    - echo "this will be in the temp-file.txt" > /tmp/temp-dir/temp-file.txt
+```
+Other examples 
+
+```yml
+$ref: 'judo-tests/_fragments/setup.json'
+$ref: 'judo-tests/_fragments/setup.yml#/definitions/prerequisites'
+$ref: 'http://example.com/setup.yml#/definitions/prerequisites'
+$ref: '#/definitions/prerequisites'
+```
+
 ### Using variable substitution
 
 Variable substitution is supported inside value strings using `{{variableName}}` syntax. All variables need to be declared inside the `vars` section in your test scenario like in the following example:

@@ -4,6 +4,7 @@ import { parse as parseSpawnArgs } from 'parse-spawn-args';
 import assert from 'assert';
 import yaml from 'js-yaml';
 import fs from 'fs';
+import path from 'path';
 import { logger } from './logger';
 import { execute, executePrerequisites } from './executor';
 import { listFilesRecursively, isFile, isDirectory } from './common/file-util';
@@ -12,6 +13,7 @@ import { StepResult } from './models/StepResult';
 import { getReporter } from './reporters/get-reporter';
 import stringToRegexp from 'string-to-regexp';
 import mustache from 'mustache';
+import refResolver from 'json-refs';
 
 /**
  * Main run function to initiate Judo. Discovers all files from provided CLI option,
@@ -115,11 +117,14 @@ const runStepFile = async (yamlFilePath, options) => {
   let runStepNames = [];
   try {
     const yamlFile = yaml.safeLoad(fileContents, 'utf8');
+    const { resolved } = await refResolver.resolveRefs(yamlFile, {
+      location: path.dirname(yamlFilePath)
+    });
     // logger.info('Running step file: ' + yamlFilePath);
-    runSteps = yamlFile.run;
+    runSteps = resolved.run;
     runStepNames = Object.keys(runSteps);
-    if (yamlFile.vars) {
-      const view = yamlFile.vars;
+    if (resolved.vars) {
+      const view = resolved.vars;
       mustache.escape = text => text;
       const resolveVars = obj => {
         Object.keys(obj).forEach((key) => {

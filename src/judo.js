@@ -12,6 +12,7 @@ import { truncateAfterDecimal } from './common/number-util';
 import { StepResult } from './models/StepResult';
 import { getReporter } from './reporters/get-reporter';
 import stringToRegexp from 'string-to-regexp';
+import mustache from 'mustache';
 import refResolver from 'json-refs';
 
 /**
@@ -122,6 +123,20 @@ const runStepFile = async (yamlFilePath, options) => {
     // logger.info('Running step file: ' + yamlFilePath);
     runSteps = resolved.run;
     runStepNames = Object.keys(runSteps);
+    if (resolved.vars) {
+      const view = resolved.vars;
+      mustache.escape = text => text;
+      const resolveVars = obj => {
+        Object.keys(obj).forEach((key) => {
+          if (typeof obj[key] === 'string') {
+            obj[key] = mustache.render(obj[key], view);
+          } else if (typeof obj[key] === 'object') {
+            resolveVars(obj[key]);
+          }
+        });
+      };
+      resolveVars(runSteps);
+    }
   } catch (e) {
     logger.error(`YAML PARSER FAILED on file ${yamlFilePath}: ${e.message}`);
     process.exit(1);

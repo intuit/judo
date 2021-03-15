@@ -1,3 +1,16 @@
+# v0.4.1 (Mon Mar 15 2021)
+
+#### 🐛  Bug Fix
+
+- 43 - Reusable variables using mustache [#47](https://github.com/intuit/judo/pull/47) ([@nicomt](https://github.com/nicomt) [@worldjoe](https://github.com/worldjoe))
+
+#### ⚠️  Pushed to master
+
+- fixing lockfile merge
+  ([@joseph_elwell@intuit.com](https://github.com/joseph_elwell@intuit.com))
+
+---
+
 # vnull (Mon Mar 15 2021)
 
 #### 🚀  Enhancement

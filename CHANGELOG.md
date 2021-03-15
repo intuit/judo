@@ -1,3 +1,18 @@
+# vnull (Mon Mar 15 2021)
+
+#### 🚀  Enhancement
+
+- Bump handlebars from 4.4.2 to 4.7.6 [#39](https://github.com/intuit/judo/pull/39) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+#### 🐛  Bug Fix
+
+- 44 - Security updates [#45](https://github.com/intuit/judo/pull/45) ([@umer2001](https://github.com/umer2001))
+- 6 - Add support for file fragments using json-refs [#46](https://github.com/intuit/judo/pull/46) ([@nicomt](https://github.com/nicomt))
+- Bump lodash from 4.17.14 to 4.17.19 [#38](https://github.com/intuit/judo/pull/38) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+- Bump yargs-parser from 13.1.1 to 13.1.2 [#40](https://github.com/intuit/judo/pull/40) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+---
+
 # v0.3.2 (Tue Oct 08 2019)
 
 #### 🐛  Bug Fix

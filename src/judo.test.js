@@ -10,15 +10,15 @@ jest.mock('js-yaml');
 jest.mock('fs');
 jest.mock('child_process');
 
-const STEP_FILE_PATH = 'tests/my-test.xml',
-  PATH_1 = 'path1',
-  NAME_1 = 'name1',
-  PATH_2 = 'path2',
-  NAME_2 = 'name2',
-  PREREQ_COMMAND = 'echo "this is a prereq command"',
-  NODE = 'node',
-  JUDO_JS = 'judo.js',
-  GOODBYE = 'goodbye';
+const STEP_FILE_PATH = 'tests/my-test.xml';
+const PATH_1 = 'path1';
+const NAME_1 = 'name1';
+const PATH_2 = 'path2';
+const NAME_2 = 'name2';
+const PREREQ_COMMAND = 'echo "this is a prereq command"';
+const NODE = 'node';
+const JUDO_JS = 'judo.js';
+const GOODBYE = 'goodbye';
 
 const mockStepResultsPassed = [
   new StepResult({
@@ -150,7 +150,6 @@ const mockLogger = () => {
 };
 
 describe('judo', () => {
-
   beforeEach(() => {
     mockLogger();
     global.process.exit = jest.fn();

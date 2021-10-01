@@ -10,16 +10,26 @@ jest.mock('js-yaml');
 jest.mock('fs');
 jest.mock('child_process');
 
+const STEP_FILE_PATH = 'tests/my-test.xml',
+  PATH_1 = 'path1',
+  NAME_1 = 'name1',
+  PATH_2 = 'path2',
+  NAME_2 = 'name2',
+  PREREQ_COMMAND = 'echo "this is a prereq command"',
+  NODE = 'node',
+  JUDO_JS = 'judo.js',
+  GOODBYE = 'goodbye';
+
 const mockStepResultsPassed = [
   new StepResult({
-    stepFilePath: 'path1',
-    stepName: 'name1',
+    stepFilePath: PATH_1,
+    stepName: NAME_1,
     passed: true,
     duration: 5
   }),
   new StepResult({
-    stepFilePath: 'path2',
-    stepName: 'name2',
+    stepFilePath: PATH_2,
+    stepName: NAME_2,
     passed: true,
     duration: 10
   })
@@ -27,14 +37,14 @@ const mockStepResultsPassed = [
 
 const mockStepResultsFailed = [
   new StepResult({
-    stepFilePath: 'path1',
-    stepName: 'name1',
+    stepFilePath: PATH_1,
+    stepName: NAME_1,
     passed: false,
     duration: 5
   }),
   new StepResult({
-    stepFilePath: 'path2',
-    stepName: 'name2',
+    stepFilePath: PATH_2,
+    stepName: NAME_2,
     passed: false,
     duration: 10
   })
@@ -42,14 +52,14 @@ const mockStepResultsFailed = [
 
 const mockStepResultsOnePassOneFail = [
   new StepResult({
-    stepFilePath: 'path1',
-    stepName: 'name1',
+    stepFilePath: PATH_1,
+    stepName: NAME_1,
     passed: true,
     duration: 5
   }),
   new StepResult({
-    stepFilePath: 'path2',
-    stepName: 'name2',
+    stepFilePath: PATH_2,
+    stepName: NAME_2,
     passed: false,
     duration: 10
   })
@@ -58,14 +68,14 @@ const mockStepResultsOnePassOneFail = [
 const mockStepFileSingle = {
   run: {
     helloWorld: {
-      prerequisites: ['echo "this is a prereq command"'],
+      prerequisites: [PREREQ_COMMAND],
       command: 'echo "hello world!"',
       expectCode: 0,
       outputContains: [
         // this makes it pass
         'hello'
       ],
-      outputDoesntContain: ['goodbye']
+      outputDoesntContain: [GOODBYE]
     }
   }
 };
@@ -73,14 +83,14 @@ const mockStepFileSingle = {
 const mockStepFileTwo = {
   run: {
     helloWorldAgain: {
-      prerequisites: ['echo "this is a prereq command"'],
+      prerequisites: [PREREQ_COMMAND],
       command: 'echo "hello again world!"',
       expectCode: 0,
       outputContains: [
         // this makes it pass
         'hello'
       ],
-      outputDoesntContain: ['goodbye']
+      outputDoesntContain: [GOODBYE]
     },
     goodbyeWorld: {
       command: 'echo "goodbye world!"',
@@ -89,7 +99,7 @@ const mockStepFileTwo = {
         // this makes it fail
         'hello'
       ],
-      outputDoesntContain: ['goodbye']
+      outputDoesntContain: [GOODBYE]
     }
   }
 };
@@ -140,11 +150,15 @@ const mockLogger = () => {
 };
 
 describe('judo', () => {
+
+  beforeEach(() => {
+    mockLogger();
+    global.process.exit = jest.fn();
+  });
+
   describe('handleResults', () => {
     it('logs success and exits with 0 if no failed tests', () => {
       const stepResults = mockStepResultsPassed;
-      mockLogger();
-      global.process.exit = jest.fn();
 
       handleResults({ stepResults });
 
@@ -155,8 +169,6 @@ describe('judo', () => {
 
     it('logs error and exits with 1 if no passed tests', () => {
       const stepResults = mockStepResultsFailed;
-      mockLogger();
-      global.process.exit = jest.fn();
 
       handleResults({ stepResults });
 
@@ -167,8 +179,6 @@ describe('judo', () => {
 
     it('logs success and error and exits with 1 if both passed and failed tests', () => {
       const stepResults = mockStepResultsOnePassOneFail;
-      mockLogger();
-      global.process.exit = jest.fn();
 
       handleResults({ stepResults });
 
@@ -198,7 +208,7 @@ describe('judo', () => {
 
   describe('run', () => {
     it('logs error and exits if process not given an argument', () => {
-      global.process.argv = ['node', 'judo.js'];
+      global.process.argv = [NODE, JUDO_JS];
       global.process.exit = jest.fn();
       fileUtilModule.isFile = () => true;
       loggerModule.logger.error = jest.fn();
@@ -213,10 +223,7 @@ describe('judo', () => {
 
     describe('invalid path given', () => {
       it('logs error and exits with code 1 if invalid path given', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
+        global.process.argv = [NODE, JUDO_JS, STEP_FILE_PATH];
         fileUtilModule.isFile = jest.fn(() => false);
         fileUtilModule.isDirectory = jest.fn(() => false);
         yaml.safeLoad = jest.fn(path => {});
@@ -232,13 +239,12 @@ describe('judo', () => {
     });
 
     describe('run single file', () => {
-      it('runs a single step file if process arguments is a file path, runs the one step in that file, and fails test if a prerequisite command fails', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
+      beforeEach(() => {
+        global.process.argv = [NODE, JUDO_JS, STEP_FILE_PATH];
         fileUtilModule.isFile = jest.fn(() => true);
         fileUtilModule.isDirectory = jest.fn(() => false);
+      });
+      it('runs a single step file if process arguments is a file path, runs the one step in that file, and fails test if a prerequisite command fails', async () => {
         yaml.safeLoad = jest.fn(path => mockStepFileSingle);
         const mockError = new Error('lol no');
         executorModule.executePrerequisites = jest.fn(async () => {
@@ -250,7 +256,7 @@ describe('judo', () => {
 
         expect(executorModule.executePrerequisites).toHaveBeenCalledTimes(1);
         expect(executorModule.executePrerequisites).toHaveBeenCalledWith({
-          prerequisites: ['echo "this is a prereq command"'],
+          prerequisites: [PREREQ_COMMAND],
           cwd: undefined
         });
         expect(executorModule.execute).toHaveBeenCalledTimes(0);
@@ -260,12 +266,6 @@ describe('judo', () => {
         );
       });
       it('runs a single step file if process arguments is a file path, runs the one step in that file, and passes if pass', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
-        fileUtilModule.isFile = jest.fn(() => true);
-        fileUtilModule.isDirectory = jest.fn(() => false);
         yaml.safeLoad = jest.fn(path => mockStepFileSingle);
         executorModule.executePrerequisites = jest.fn(async () => {});
         executorModule.execute = jest.fn(
@@ -277,7 +277,7 @@ describe('judo', () => {
         expect(fileUtilModule.isFile).toHaveBeenCalledTimes(1);
         expect(executorModule.executePrerequisites).toHaveBeenCalledTimes(1);
         expect(executorModule.executePrerequisites).toHaveBeenCalledWith({
-          prerequisites: ['echo "this is a prereq command"'],
+          prerequisites: [PREREQ_COMMAND],
           cwd: undefined
         });
         expect(executorModule.execute).toHaveBeenCalledTimes(1);
@@ -297,12 +297,6 @@ describe('judo', () => {
         expect(loggerModule.logger.error).toHaveBeenCalledTimes(0);
       });
       it('runs a single step file if process arguments is a file path, runs the two steps in that file, and fails when one test fails, one test passes', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
-        fileUtilModule.isFile = jest.fn(() => true);
-        fileUtilModule.isDirectory = jest.fn(() => false);
         yaml.safeLoad = jest.fn(path => mockStepFileTwo);
         executorModule.executePrerequisites = jest.fn(async () => {});
         executorModule.execute = jest
@@ -315,7 +309,7 @@ describe('judo', () => {
         expect(fileUtilModule.isFile).toHaveBeenCalledTimes(1);
         expect(executorModule.executePrerequisites).toHaveBeenCalledTimes(1);
         expect(executorModule.executePrerequisites).toHaveBeenCalledWith({
-          prerequisites: ['echo "this is a prereq command"'],
+          prerequisites: [PREREQ_COMMAND],
           cwd: undefined
         });
         expect(executorModule.execute).toHaveBeenCalledTimes(2);
@@ -348,12 +342,6 @@ describe('judo', () => {
       });
 
       it('runs a single step file with a regex "outputContains" check and fails if regex doesnt match', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
-        fileUtilModule.isFile = jest.fn(() => true);
-        fileUtilModule.isDirectory = jest.fn(() => false);
         yaml.safeLoad = jest.fn(path => mockStepFileSingleRegexFail);
         executorModule.executePrerequisites = jest.fn(async () => {});
         executorModule.execute = jest.fn(
@@ -381,12 +369,6 @@ describe('judo', () => {
       });
 
       it('runs a single step file with a regex "outputContains" check and passes if regex does match', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
-        fileUtilModule.isFile = jest.fn(() => true);
-        fileUtilModule.isDirectory = jest.fn(() => false);
         yaml.safeLoad = jest.fn(path => mockStepFileSingleRegexPass);
         executorModule.executePrerequisites = jest.fn(async () => {});
         executorModule.execute = jest.fn(
@@ -413,12 +395,6 @@ describe('judo', () => {
         expect(loggerModule.logger.error).toHaveBeenCalledTimes(0);
       });
       it('runs a single step file with invalid yaml', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
-        fileUtilModule.isFile = jest.fn(() => true);
-        fileUtilModule.isDirectory = jest.fn(() => false);
         yaml.safeLoad = jest.fn(() => new Error('invalid parsing'));
         executorModule.executePrerequisites = jest.fn(async () => {});
         executorModule.execute = jest.fn();
@@ -432,10 +408,7 @@ describe('judo', () => {
     });
     describe('run directory of files', () => {
       it('runs two step files if process arguments is a directory path containing two files, runs the two steps in those files, and passes if all pass', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
+        global.process.argv = [NODE, JUDO_JS, STEP_FILE_PATH];
         fileUtilModule.isFile = jest.fn(() => false);
         fileUtilModule.isDirectory = jest.fn(() => true);
         fileUtilModule.listFilesRecursively = () => [
@@ -458,7 +431,7 @@ describe('judo', () => {
 
         expect(executorModule.executePrerequisites).toHaveBeenCalledTimes(2);
         expect(executorModule.executePrerequisites).toHaveBeenCalledWith({
-          prerequisites: ['echo "this is a prereq command"'],
+          prerequisites: [PREREQ_COMMAND],
           cwd: undefined
         });
         expect(executorModule.execute).toHaveBeenCalledTimes(3); // helloWorld, helloWorldAgain, goodbyeWorld
@@ -503,10 +476,7 @@ describe('judo', () => {
         );
       });
       it('runs two step files if process arguments is a directory path containing two JSON files, runs the two steps in those files, and passes if all pass', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath, '--includejsonfiles'];
+        global.process.argv = [NODE, JUDO_JS, STEP_FILE_PATH, '--includejsonfiles'];
         fileUtilModule.isFile = jest.fn(() => false);
         fileUtilModule.isDirectory = jest.fn(() => true);
         fileUtilModule.listFilesRecursively = () => [
@@ -529,7 +499,7 @@ describe('judo', () => {
 
         expect(executorModule.executePrerequisites).toHaveBeenCalledTimes(2);
         expect(executorModule.executePrerequisites).toHaveBeenCalledWith({
-          prerequisites: ['echo "this is a prereq command"'],
+          prerequisites: [PREREQ_COMMAND],
           cwd: undefined
         });
         expect(executorModule.execute).toHaveBeenCalledTimes(3); // helloWorld, helloWorldAgain, goodbyeWorld
@@ -574,10 +544,7 @@ describe('judo', () => {
         );
       });
       it('logs error and exits with code 1 if error occurs running step file', async () => {
-        const stepFilePath = 'tests/my-test.xml';
-        mockLogger();
-        global.process.exit = jest.fn();
-        global.process.argv = ['node', 'judo.js', stepFilePath];
+        global.process.argv = [NODE, JUDO_JS, STEP_FILE_PATH];
         fileUtilModule.isFile = jest.fn(() => false);
         fileUtilModule.isDirectory = jest.fn(() => true);
         fileUtilModule.listFilesRecursively = () => [

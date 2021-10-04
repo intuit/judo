@@ -6,7 +6,6 @@ const STDOUT = 'stdout';
 const STDERR = 'stderr';
 const CMD1 = 'cmd1';
 const CMD2 = 'cmd2';
-const ECHO = 'echo';
 const SOME_DIR = 'some/dir';
 const PIPE = 'pipe';
 
@@ -163,7 +162,7 @@ describe('executor', () => {
 
       mockChildSpawnWorked(writeMock);
 
-      const cmd = ECHO;
+      const cmd = 'echo';
       const args = ['hello', 'world!'];
       const opts = {
         // argsString: '"hello world!"',
@@ -189,7 +188,7 @@ describe('executor', () => {
 
       mockChildSpawnWorked(writeMock);
 
-      const cmd = ECHO;
+      const cmd = 'echo';
       const args = ['hello world!', '1>&2'];
       const opts = {
         argsString: '"hello world!"',
@@ -218,7 +217,7 @@ describe('executor', () => {
       mockChildSpawnWorked(writeMock);
 
       try {
-        res = await execute(ECHO, ['hello world!'], {
+        res = await execute('echo', ['hello world!'], {
           argsString: '"hello world!"',
           cwd: undefined,
           when: [
@@ -250,7 +249,7 @@ describe('executor', () => {
       let res;
 
       try {
-        res = await execute(ECHO, ['hello world!'], {
+        res = await execute('echo', ['hello world!'], {
           argsString: '"hello world!"',
           cwd: undefined,
           when: [
@@ -281,7 +280,7 @@ describe('executor', () => {
       mockChildSpawnWorked(writeMock, { timeout: 500 });
 
       try {
-        res = await execute(ECHO, ['hello world!'], {
+        res = await execute('echo', ['hello world!'], {
           argsString: '"hello world!"',
           cwd: undefined,
           when: [],

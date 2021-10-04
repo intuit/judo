@@ -67,13 +67,14 @@ const mockChildSpawnWorked = (writeMock, options = { timeout: 600 }) => {
 };
 
 describe('executor', () => {
-  describe('executePrerequisites', () => {
-    beforeEach(() => {
-      mockLogger();
-      mockExecWorked();
-    });
+  beforeEach(() => {
+    mockLogger();
+  });
 
+  describe('executePrerequisites', () => {
     it('combines commands into one by chaining them with &&, and runs them in the specified cwd', async () => {
+      mockExecWorked();
+
       let err;
       let res;
 
@@ -93,6 +94,8 @@ describe('executor', () => {
       });
     });
     it('logs output from stdout and stderr, and logs when complete', async () => {
+      mockExecWorked();
+
       let err;
       let res;
 
@@ -115,6 +118,8 @@ describe('executor', () => {
     });
 
     it('rejects if commands exit with non-zero code', async () => {
+      mockExecFailed();
+
       let err;
       let res;
 
@@ -131,6 +136,8 @@ describe('executor', () => {
       expect(err).toBeInstanceOf(Error);
     });
     it('resolves if commands exit with zero code', async () => {
+      mockExecWorked();
+
       let err;
       let res;
 

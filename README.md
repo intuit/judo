@@ -19,7 +19,7 @@ Judo is an easy-to-use Command Line Interface (CLI) integration testing framewor
 
 ## Installation
 
-Judo is distributed and installed using npm, the package manager that comes bundled with node.js. In order to be able to install Judo, you will need to first ensure that you have node.js installed on your system (which will also install npm for you). Then you can run the following command:
+Judo is distributed and installed using [npm](https://www.npmjs.com/), the package manager that comes bundled with node.js. In order to be able to install Judo, you will need to first ensure that you have node.js installed on your system (which will also install npm for you). Then you can run the following command:
 
 ```
 npm i -D @intuit/judo
@@ -289,3 +289,15 @@ Judo operates in the following order:
 ## Things to Know
 
 Each `when` response will only happen once, in order of their definition in the `yaml` file. So if you expect the same input multiple times, you need to write multiple responses to it.
+
+## Terminologies
+
+- <font color="red">Bug</font>: A bug computer definition is referred to as a failure or a flaw in the software program. A Bug produces an incorrect or undesired result that deviates from the expected result or behavior.
+- <font color="red">Command Line Interface (CLI)</font>: A command line interface (CLI) is a text-based user interface (UI) used to view and manage computer files. Command line interfaces are also called command-line user interfaces, console user interfaces and character user interfaces.
+- <font color="red">JavaScript</font>: [JavaScript](https://www.javascript.com/) often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.
+- <font color="red">Repository</font>: A software repository, or “repo” for short, is a storage location for software packages. Often a table of contents is also stored, along with metadata. A software repository is typically managed by source control or repository managers. Package Managers allow for installing and updating the repositories (sometimes called “packages”) versus having to do this manually.
+- <font color="red">Spawned</font>: Spawn in computing refers to a function that loads and executes a new child process. The current process may wait for the child to terminate or may continue to execute concurrent computing. Creating a new subprocess requires enough memory in which both the child process and the current program can execute.
+- <font color="red">stdin</font>: Standard input is a stream from which a program reads its input data. The program requests data transfers by use of the read operation.
+- <font color="red">stdout</font>: Standard output is a stream to which a program writes its output data. The program requests data transfer with the write operation.
+- <font color="red">stderr</font>: Standard error is another output stream typically used by programs to output error messages or diagnostics. It is a stream independent of standard output and can be redirected separately.
+- <font color="red">Variable</font>: Variable is a symbolic name associated with a value and whose associated value may be changed.

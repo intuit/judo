@@ -2,6 +2,13 @@ import childProcess from 'child_process';
 import * as loggerModule from './logger';
 import { execute, executePrerequisites } from './executor';
 
+const STDOUT = 'stdout';
+const STDERR = 'stderr';
+const CMD1 = 'cmd1';
+const CMD2 = 'cmd2';
+const SOME_DIR = 'some/dir';
+const PIPE = 'pipe';
+
 const mockLogger = () => {
   loggerModule.logger.lineBreak = jest.fn();
   loggerModule.logger.info = jest.fn();
@@ -17,8 +24,8 @@ const mockExecWorked = () => {
   childProcess.exec = jest.fn((cmd, opts) => ({
     // exits 0 for working
     on: jest.fn((event, cb) => cb(0)), // eslint-disable-line
-    stdout: { on: jest.fn((event, cb) => cb('stdout')) }, // eslint-disable-line
-    stderr: { on: jest.fn((event, cb) => cb('stderr')) } // eslint-disable-line
+    stdout: { on: jest.fn((event, cb) => cb(STDOUT)) }, // eslint-disable-line
+    stderr: { on: jest.fn((event, cb) => cb(STDERR)) } // eslint-disable-line
   }));
 };
 
@@ -26,8 +33,8 @@ const mockExecFailed = () => {
   childProcess.exec = jest.fn(() => ({
     // exits 1 for fail
     on: jest.fn((event, cb) => cb(1)), // eslint-disable-line
-    stdout: { on: jest.fn((event, cb) => cb('stdout')) }, // eslint-disable-line
-    stderr: { on: jest.fn((event, cb) => cb('stderr')) } // eslint-disable-line
+    stdout: { on: jest.fn((event, cb) => cb(STDOUT)) }, // eslint-disable-line
+    stderr: { on: jest.fn((event, cb) => cb(STDERR)) } // eslint-disable-line
   }));
 };
 
@@ -59,9 +66,12 @@ const mockChildSpawnWorked = (writeMock, options = { timeout: 600 }) => {
 };
 
 describe('executor', () => {
+  beforeEach(() => {
+    mockLogger();
+  });
+
   describe('executePrerequisites', () => {
     it('combines commands into one by chaining them with &&, and runs them in the specified cwd', async () => {
-      mockLogger();
       mockExecWorked();
 
       let err;
@@ -69,8 +79,8 @@ describe('executor', () => {
 
       try {
         res = await executePrerequisites({
-          prerequisites: ['cmd1', 'cmd2'],
-          cwd: 'some/dir'
+          prerequisites: [CMD1, CMD2],
+          cwd: SOME_DIR
         });
       } catch (e) {
         err = e;
@@ -78,12 +88,11 @@ describe('executor', () => {
 
       expect(res).toBeUndefined();
       expect(err).toBeUndefined();
-      expect(childProcess.exec).toHaveBeenCalledWith('cmd1 && cmd2', {
-        cwd: 'some/dir'
+      expect(childProcess.exec).toHaveBeenCalledWith(`${CMD1} && ${CMD2}`, {
+        cwd: SOME_DIR
       });
     });
     it('logs output from stdout and stderr, and logs when complete', async () => {
-      mockLogger();
       mockExecWorked();
 
       let err;
@@ -91,8 +100,8 @@ describe('executor', () => {
 
       try {
         res = await executePrerequisites({
-          prerequisites: ['cmd1', 'cmd2'],
-          cwd: 'some/dir'
+          prerequisites: [CMD1, CMD2],
+          cwd: SOME_DIR
         });
       } catch (e) {
         err = e;
@@ -103,12 +112,11 @@ describe('executor', () => {
       expect(loggerModule.logger.info).toHaveBeenCalledWith(
         'Prerequisites complete'
       );
-      expect(loggerModule.logger.logOutput).toHaveBeenCalledWith('stdout');
-      expect(loggerModule.logger.logOutput).toHaveBeenCalledWith('stderr');
+      expect(loggerModule.logger.logOutput).toHaveBeenCalledWith(STDOUT);
+      expect(loggerModule.logger.logOutput).toHaveBeenCalledWith(STDERR);
     });
 
     it('rejects if commands exit with non-zero code', async () => {
-      mockLogger();
       mockExecFailed();
 
       let err;
@@ -116,8 +124,8 @@ describe('executor', () => {
 
       try {
         res = await executePrerequisites({
-          prerequisites: ['cmd1', 'cmd2'],
-          cwd: 'some/dir'
+          prerequisites: [CMD1, CMD2],
+          cwd: SOME_DIR
         });
       } catch (e) {
         err = e;
@@ -127,7 +135,6 @@ describe('executor', () => {
       expect(err).toBeInstanceOf(Error);
     });
     it('resolves if commands exit with zero code', async () => {
-      mockLogger();
       mockExecWorked();
 
       let err;
@@ -135,8 +142,8 @@ describe('executor', () => {
 
       try {
         res = await executePrerequisites({
-          prerequisites: ['cmd1', 'cmd2'],
-          cwd: 'some/dir'
+          prerequisites: [CMD1, CMD2],
+          cwd: SOME_DIR
         });
       } catch (e) {
         err = e;
@@ -168,7 +175,7 @@ describe('executor', () => {
 
       expect(childProcess.spawn).toHaveBeenCalledWith(cmd, args, {
         ...opts,
-        stdio: ['pipe', 'pipe', 'pipe']
+        stdio: [PIPE, PIPE, PIPE]
       });
       expect(loggerModule.logger.logStdout).toHaveBeenCalledWith(
         'hello world!'
@@ -194,7 +201,7 @@ describe('executor', () => {
 
       expect(childProcess.spawn).toHaveBeenCalledWith(cmd, args, {
         ...opts,
-        stdio: ['pipe', 'pipe', 'pipe']
+        stdio: [PIPE, PIPE, PIPE]
       });
       expect(loggerModule.logger.logStderr).toHaveBeenCalledWith(
         'error world!'

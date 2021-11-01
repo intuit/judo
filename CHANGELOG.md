@@ -1,3 +1,11 @@
+# vnull (Mon Nov 01 2021)
+
+#### 🐛  Bug Fix
+
+- 43 - folder-scoped reusable variables [#52](https://github.com/intuit/judo/pull/52) (jelwell@yahoo.com)
+
+---
+
 # v0.4.1 (Mon Mar 15 2021)
 
 #### 🐛  Bug Fix

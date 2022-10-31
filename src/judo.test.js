@@ -402,7 +402,47 @@ describe('judo', () => {
 
         expect(executorModule.execute).toHaveBeenCalledTimes(0);
         expect(global.process.exit).toHaveBeenCalledWith(1);
-        expect(loggerModule.logger.error).toHaveBeenCalledTimes(2);
+        expect(loggerModule.logger.error).toHaveBeenCalledTimes(1);
+      });
+
+      it('when a step is passed as arg, runs a single step file with execution of ONLY the step passed', async () => {
+        global.process.argv = [NODE, JUDO_JS, STEP_FILE_PATH, 'goodbyeWorld'];
+        yaml.safeLoad = jest.fn(path => mockStepFileTwo);
+        executorModule.executePrerequisites = jest.fn(async () => {});
+        executorModule.execute = jest
+          .fn()
+          .mockImplementationOnce(async () => goodbyeWorldMockExecuteOutput);
+
+        await run();
+
+        expect(fileUtilModule.isFile).toHaveBeenCalledTimes(1);
+        expect(executorModule.execute).toHaveBeenCalledTimes(1);
+        expect(executorModule.execute).toHaveBeenCalledWith(
+          'echo',
+          ['goodbye world!'],
+          {
+            argsString: '"goodbye world!"',
+            cwd: undefined,
+            when: [],
+            timeout: 120000
+          }
+        );
+        expect(loggerModule.logger.error).toHaveBeenCalledWith(
+          expect.stringContaining('FAILED "goodbyeWorld"')
+        );
+      });
+
+      it('when an invalid arg is passed as step name for execution, no steps run in the file', async () => {
+        global.process.argv = [NODE, JUDO_JS, STEP_FILE_PATH, 'invalid'];
+        yaml.safeLoad = jest.fn(path => mockStepFileTwo);
+        executorModule.executePrerequisites = jest.fn(async () => {});
+        executorModule.execute = jest.fn();
+
+        await run();
+
+        expect(fileUtilModule.isFile).toHaveBeenCalledTimes(1);
+        expect(executorModule.execute).toHaveBeenCalledTimes(0);
+        expect(loggerModule.logger.error).toHaveBeenCalledTimes(0);
       });
     });
     describe('run directory of files', () => {
@@ -558,6 +598,61 @@ describe('judo', () => {
         expect(executorModule.execute).toHaveBeenCalledTimes(0);
         expect(global.process.exit).toHaveBeenCalledWith(1);
         expect(loggerModule.logger.error).toHaveBeenCalledTimes(2);
+      });
+
+      it('when multiple steps are passed for execution, runs ONLY the steps passed in args across the files in the directory', async () => {
+        global.process.argv = [NODE, JUDO_JS, STEP_FILE_PATH, 'helloWorld', 'helloWorldAgain'];
+        fileUtilModule.isFile = jest.fn(() => false);
+        fileUtilModule.isDirectory = jest.fn(() => true);
+        fileUtilModule.listFilesRecursively = () => [
+          'filea.yml',
+          'somdir/fileb.yml'
+        ];
+        yaml.safeLoad = jest
+          .fn()
+          .mockImplementationOnce(path => mockStepFileSingle)
+          .mockImplementationOnce(path => mockStepFileTwo);
+
+        executorModule.executePrerequisites = jest.fn(async () => {});
+        executorModule.execute = jest
+          .fn()
+          .mockImplementationOnce(async () => helloWorldMockExecuteOutput)
+          .mockImplementationOnce(async () => helloWorldAgainMockExecuteOutput);
+
+        await run();
+
+        expect(executorModule.executePrerequisites).toHaveBeenCalledTimes(2);
+        expect(executorModule.executePrerequisites).toHaveBeenCalledWith({
+          prerequisites: [PREREQ_COMMAND],
+          cwd: undefined
+        });
+        expect(executorModule.execute).toHaveBeenCalledTimes(2); // helloWorld, helloWorldAgain
+        expect(executorModule.execute).toHaveBeenCalledWith(
+          'echo',
+          ['hello world!'],
+          {
+            argsString: '"hello world!"',
+            cwd: undefined,
+            when: [],
+            timeout: 120000
+          }
+        );
+        expect(executorModule.execute).toHaveBeenCalledWith(
+          'echo',
+          ['hello again world!'],
+          {
+            argsString: '"hello again world!"',
+            cwd: undefined,
+            when: [],
+            timeout: 120000
+          }
+        );
+        expect(loggerModule.logger.success).toHaveBeenCalledWith(
+          expect.stringContaining('PASSED "helloWorld"')
+        );
+        expect(loggerModule.logger.success).toHaveBeenCalledWith(
+          expect.stringContaining('PASSED "helloWorldAgain"')
+        );
       });
     });
   });

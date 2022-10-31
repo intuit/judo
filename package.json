@@ -51,7 +51,8 @@
     "json-refs": "^3.0.15",
     "mustache": "^4.0.1",
     "parse-spawn-args": "~1.0.2",
-    "string-to-regexp": "~0.1.0"
+    "string-to-regexp": "~0.1.0",
+    "yargs": "^17.6.0"
   },
   "devDependencies": {
     "@babel/cli": "~7.1.2",

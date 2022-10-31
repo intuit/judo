@@ -14,14 +14,16 @@ import { getReporter } from './reporters/get-reporter';
 import stringToRegexp from 'string-to-regexp';
 import mustache from 'mustache';
 import refResolver from 'json-refs';
+import yargs from 'yargs';
 
 /**
  * Main run function to initiate Judo. Discovers all files from provided CLI option,
  * runs tests in each file, and handles the results.
  */
 const run = async () => {
-  const yamlFilePath = process.argv[2];
-  const optionsFlags = process.argv.slice(3);
+  let argv = yargs(process.argv.slice(2)).argv;
+  const yamlFilePath = argv._[0];
+  const inputSteps = argv._.slice(1);
 
   let options = {
     timeout: 120000,
@@ -29,17 +31,15 @@ const run = async () => {
   };
 
   // gather options flags
-  optionsFlags.forEach((flag, i) => {
-    if (flag === '--timeout' || flag === '-t') {
-      options.timeout = optionsFlags[i + 1];
-    }
-    if (flag === '--junitreport' || flag === '-j') {
-      options.junitReport = true;
-    }
-    if (flag === '--includejsonfiles' || flag === '-ij') {
-      options.includeJSONFiles = true;
-    }
-  });
+  if (argv.timeout !== undefined || argv.t !== undefined) {
+    options.timeout = (argv.timeout !== undefined) ? argv.timeout : argv.t;
+  }
+  if (argv.junitreport || argv.j) {
+    options.junitReport = true;
+  }
+  if (argv.includejsonfiles || (argv.i && argv.j)) {
+    options.includeJSONFiles = true;
+  }
 
   if (!yamlFilePath) {
     logger.error(
@@ -51,7 +51,7 @@ const run = async () => {
   if (isFile(yamlFilePath)) {
     // if argument is a file, just run that file
     try {
-      const { stepResults } = await runStepFile(yamlFilePath, options);
+      const { stepResults } = await runStepFile(yamlFilePath, inputSteps, options);
       return handleResults({ stepResults });
     } catch (e) {
       logger.error(new Error(`Failed to run step file: ${e}`));
@@ -72,7 +72,7 @@ const run = async () => {
 
     const recurse = async thisStepFilePath => {
       try {
-        const { stepResults } = await runStepFile(thisStepFilePath, options);
+        const { stepResults } = await runStepFile(thisStepFilePath, inputSteps, options);
         allStepResults = allStepResults.concat(stepResults);
 
         numStepFilesComplete++;
@@ -110,7 +110,7 @@ const run = async () => {
  * @param {String} yamlFilePath
  * @param {Object} options        options object. contains "timeout"
  */
-const runStepFile = async (yamlFilePath, options) => {
+const runStepFile = async (yamlFilePath, stepsToExecute, options) => {
   const fileContents = fs.readFileSync(yamlFilePath);
   let runSteps = {};
   // first step for every file is gonna be parse itself
@@ -142,8 +142,17 @@ const runStepFile = async (yamlFilePath, options) => {
     process.exit(1);
   }
 
+  // if there are specific steps mentioned by user, then filter out only those steps for execution
+  if (stepsToExecute.length > 0) {
+    runStepNames = runStepNames.filter(val => stepsToExecute.includes(val));
+  }
+
   const numTotal = runStepNames.length;
   const thisStepFileResults = [];
+  // if there are no steps to execute, then return empty
+  if (numTotal === 0) {
+    return { stepResults: thisStepFileResults };
+  }
 
   let currentStepIndex = 0;
   let numComplete = 0;
@@ -184,6 +193,7 @@ const runStepFile = async (yamlFilePath, options) => {
       return { stepResults: thisStepFileResults };
     }
   };
+
   return recurse(runSteps[currentStepIndex]);
 };
 

@@ -23,7 +23,7 @@ import yargs from 'yargs';
 const run = async () => {
   let argv = yargs(process.argv.slice(2)).argv;
   const yamlFilePath = argv._[0];
-  const yamlFileSteps = argv._.slice(1);
+  const inputSteps = argv._.slice(1);
 
   let options = {
     timeout: 120000,
@@ -51,7 +51,7 @@ const run = async () => {
   if (isFile(yamlFilePath)) {
     // if argument is a file, just run that file
     try {
-      const { stepResults } = await runStepFile(yamlFilePath, yamlFileSteps, options);
+      const { stepResults } = await runStepFile(yamlFilePath, inputSteps, options);
       return handleResults({ stepResults });
     } catch (e) {
       logger.error(new Error(`Failed to run step file: ${e}`));
@@ -72,7 +72,7 @@ const run = async () => {
 
     const recurse = async thisStepFilePath => {
       try {
-        const { stepResults } = await runStepFile(thisStepFilePath, yamlFileSteps, options);
+        const { stepResults } = await runStepFile(thisStepFilePath, inputSteps, options);
         allStepResults = allStepResults.concat(stepResults);
 
         numStepFilesComplete++;

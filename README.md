@@ -80,6 +80,12 @@ judo <file>.json
 
 # or point to a "test suite" directory of "test suite" yaml files. See options section for the optional flag to support JSON files.
 judo <directory>
+
+# or point to only one test step in a "test scenario" file
+judo <file> stepName
+
+# or point to only a subset of steps in a "test scenario" file
+judo <file> step1 step3
 ```
 
 ## Options
